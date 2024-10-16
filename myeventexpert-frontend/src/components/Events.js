@@ -12,14 +12,16 @@ const Events = () => {
     date: ''
   });
 
+  // Fetch events when the component loads
   useEffect(() => {
     fetchEvents();
   }, []);
 
+  // Fetch events the user is attending or created
   const fetchEvents = async () => {
     const token = localStorage.getItem('access_token');
     try {
-      const response = await axios.get('http://localhost:8000/api/events/', {
+      const response = await axios.get('http://localhost:8000/api/events/dashboard/', {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -30,11 +32,12 @@ const Events = () => {
     }
   };
 
+  // Handle creating a new event
   const handleCreateEvent = async () => {
     const token = localStorage.getItem('access_token');
     try {
       const response = await axios.post(
-        'http://localhost:8000/api/events/',
+        'http://localhost:8000/api/events/dashboard/', // Adjusted URL for creating events
         newEvent,
         {
           headers: {
@@ -42,30 +45,36 @@ const Events = () => {
           },
         }
       );
+      // Update the events state with the newly created event
       setEvents([...events, response.data]);
       setShowCreateModal(false);
-      setNewEvent({ title: '', description: '', date: '' });
+      setNewEvent({ title: '', description: '', date: '' }); // Reset the form
     } catch (error) {
       console.error('Error creating event', error);
     }
   };
 
-  const handleDeleteEvent = async (eventId) => {
+// Handle deleting an event
+const handleDeleteEvent = async (eventId) => {
     const token = localStorage.getItem('access_token');
     if (window.confirm('Are you sure you want to delete this event?')) {
       try {
-        await axios.delete(`http://localhost:8000/api/events/${eventId}/`, {
+        // Corrected URL with 'delete/' in the path
+        await axios.delete(`http://localhost:8000/api/events/delete/${eventId}/`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
+        // Remove the deleted event from the state
         setEvents(events.filter((event) => event.id !== eventId));
       } catch (error) {
         console.error('Error deleting event', error);
       }
     }
   };
+  
 
+  // Show and close the modal for creating events
   const handleShowCreateModal = () => setShowCreateModal(true);
   const handleCloseCreateModal = () => setShowCreateModal(false);
 
@@ -140,7 +149,7 @@ const Events = () => {
             Close
           </Button>
           <Button variant="primary" onClick={handleCreateEvent}>
-            Save Event
+            Create Event
           </Button>
         </Modal.Footer>
       </Modal>
