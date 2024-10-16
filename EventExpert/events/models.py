@@ -9,3 +9,10 @@ class Event(models.Model):
 
     def __str__(self):
         return self.title
+    
+class EmailList(models.Model):
+    email = models.EmailField(unique=True)
+    added_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.email

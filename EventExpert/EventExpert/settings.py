@@ -141,6 +141,14 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'MyEventPlaner@gmail.com'  # Replace with your actual email
+EMAIL_HOST_PASSWORD = 'MyEventPlaner1234'  # Replace with your app password (for Gmail)
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
 # Django REST Framework configuration
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
